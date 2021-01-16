@@ -1,0 +1,9 @@
+logging:
+  level:
+    com.navinfo.jenkinshelper: DEBUG
+  config: classpath:logback-spring.xml
+
+spring:
+  application:
+    name: jenkinsHelper
+
