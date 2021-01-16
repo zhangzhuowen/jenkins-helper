@@ -1,9 +1,63 @@
+#服务信息
+server:
+  port: 8080
+
+spring:
+  application:
+    name: jenkins-helper
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  #数据源配置
+  datasource:
+    url: jdbc:mysql://10.130.11.246:3306/xboot-test?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: fm_mysql123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      #初始化连接大小
+      initial-size: 8
+      #最小空闲连接数
+      min-idle: 5
+      #最大连接数
+      max-active: 10
+      #查询超时时间
+      query-timeout: 6000
+      #事务查询超时时间
+      transaction-query-timeout: 6000
+      #关闭空闲连接超时时间
+      remove-abandoned-timeout: 1800
+      #自动提交,默认:true
+      # 配置 DruidStatFilter
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: .js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*
+      stat-view-servlet:
+        # 默认true 内置监控页面首页/druid/index.html
+        enabled: true
+        url-pattern: /druid/*
+        # 允许清空统计数据
+        reset-enable: true
+        login-username: root
+        login-password: 123456
+        # IP白名单 多个逗号分隔
+        allow:
+        # IP黑名单
+        deny:
+
+# 配置logback
 logging:
   level:
     com.navinfo.jenkinshelper: DEBUG
   config: classpath:logback-spring.xml
 
-spring:
-  application:
-    name: jenkinsHelper
-
+# Swagger界面内容配置
+swagger:
+  title: 集成Jenkins打包及其Sonarqube代码检测 API
+  description: Jenkins-Helper API 描述
+  version: 1.0.0
+  contact:
+    name: 张卓文
+    email: zhangzhuowen@navinfo.com

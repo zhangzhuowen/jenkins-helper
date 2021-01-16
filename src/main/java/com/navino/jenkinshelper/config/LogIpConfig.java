@@ -9,8 +9,10 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- * LogIpConfig
- *
+ * @author zhangZhuoWen
+ * @ClassName LogIpConfig
+ * @date 2021/1/16 20:43
+ * @Description logback日志获取服务地址
  */
 @Slf4j
 @Configuration("logIpConfig")
