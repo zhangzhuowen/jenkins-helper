@@ -50,7 +50,7 @@
             <version>1.2.70</version>
         </dependency>
 
-        <!-- Swagger -->
+        <!-- 集成Swagger -->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
@@ -62,7 +62,7 @@
             <version>2.7.0</version>
         </dependency>
 
-        <!-- Logback日志 -->
+        <!-- 集成Logback日志 -->
         <dependency>
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>
@@ -79,13 +79,19 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
-        <!-- 数据库连接池 -->
+        <!-- 集成 Druid数据库连接池 -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
             <version>1.1.10</version>
         </dependency>
 
+        <!-- 集成 mybatis-plus -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.3.0</version>
+        </dependency>
 
     </dependencies>
 
