@@ -10,9 +10,9 @@ spring:
     time-zone: GMT+8
   #数据源配置
   datasource:
-    url: jdbc:mysql://10.130.11.246:3306/xboot-test?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://10.130.10.45:3306/sonar?useUnicode=true&characterEncoding=utf8
     username: root
-    password: fm_mysql123456
+    password: coremap_1024++
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
