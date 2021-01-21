@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.navino.jenkinshelper.mapper.CheckProjectMapper">
+
+    <select id="queryAllCheckProjects" resultMap="projectUserMap">
+            SELECT
+	           a.id,
+	           a.project_type,
+	           a.jenkins_name,
+	           a.sonar_name,
+	           a.java_name,
+	           b.email,
+	           b.`name`,
+	           b.user_id
+            FROM
+               check_project a,
+               navi_users b
+            WHERE
+               a.user_id = b.user_id
+    </select>
+
+    <resultMap id="projectUserMap" type="checkProject">
+        <result property="id" column="id"/>
+        <result property="projectType" column="project_type"/>
+		<result property="jenkinsName" column="jenkins_name"/>
+		<result property="sonarName" column="sonar_name"/>
+		<result property="javaName" column="java_name"/>
+
+        <association property="naviUsers" javaType="naviUsers">
+			<result property="name" column="name"/>
+			<result property="email" column="email"/>
+        </association>
+    </resultMap>
+
+</mapper>

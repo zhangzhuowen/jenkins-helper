@@ -19,7 +19,14 @@ public class CheckProject {
 
     @TableId(type = IdType.AUTO)
     private Long id;
-    private String projectType;
-    private String name;
 
+    private String projectType;
+
+    private String jenkinsName;
+
+    private String sonarName;
+
+    private String javaName;
+
+    private NaviUsers naviUsers;
 }

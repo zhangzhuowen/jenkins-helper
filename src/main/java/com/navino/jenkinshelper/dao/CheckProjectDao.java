@@ -1,17 +1,12 @@
 package com.navino.jenkinshelper.dao;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.navino.jenkinshelper.entity.CheckProject;
 import com.navino.jenkinshelper.mapper.CheckProjectMapper;
-import com.sun.org.apache.regexp.internal.RE;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * @author zhangZhuoWen
@@ -36,28 +31,23 @@ public class CheckProjectDao {
     }
 
     /**
-     * queryAllProjectNames
+     * queryAllCheckProjects
      *
      * @return
      */
-    public List<CheckProject> queryAllProjectNames(){
-        return mapper.selectList(null);
-    }
+    public List<CheckProject> queryAllCheckProjects(){
+        List<CheckProject> checkProjects1 = new ArrayList<>();
+        List<CheckProject> checkProjects = mapper.queryAllCheckProjects();
+        for (CheckProject checkProject : checkProjects) {
+            String name = checkProject.getJenkinsName();
+            if(Arrays.asList("service_meta_master","service_biz_common_park","service_dealership_master","service_limit_master").contains(name)){
+                checkProjects1.add(checkProject);
+            }
 
-    /**
-     * queryProNamesByProType
-     *
-     * @param projectType
-     * @return
-     */
-    public List<CheckProject> queryProNamesByProType(String projectType){
-        if(StringUtils.isEmpty(projectType)){
-            return null;
         }
+        return checkProjects1;
 
-        QueryWrapper<CheckProject> wrapper = new QueryWrapper<>();
-        wrapper.eq("project_type",projectType);
-
-        return mapper.selectList(wrapper);
+//        return mapper.queryAllCheckProjects();
     }
+
 }
