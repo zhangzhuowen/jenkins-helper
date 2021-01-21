@@ -62,7 +62,7 @@ swagger:
     name: 张卓文
     email: zhangzhuowen@navinfo.com
 
-
+# mybatis-plus 配置
 mybatis-plus:
   type-aliases-package: com.navino.jenkinshelper.entity
 
