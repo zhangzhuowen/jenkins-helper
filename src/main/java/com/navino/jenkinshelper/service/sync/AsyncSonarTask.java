@@ -65,8 +65,9 @@ public class AsyncSonarTask {
             //打包失败
             //TODO
             else if (body.contains("alt=\"Failed\" tooltip=\"Failed\"")) {
-                log.info("项目: " + jenkinsName + ",build接口执行失败，重新执行");
+                log.error("项目: " + jenkinsName + ",build接口执行失败!");
                 //
+                break;
             }
             //正在打包中
             else if (body.contains("class=\"build-caption-progress-bar\"")) {

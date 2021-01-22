@@ -66,28 +66,28 @@ public class SonarqubeCheck {
         //1.查询所有Jenkins中所配置项目名称
         List<CheckProject> checkProjects = checkProjectDao.queryAllCheckProjects();
 
-//        if (CollectionUtils.isEmpty(checkProjects)) {
-//            return null;
-//        }
-//
-//        //2.异步发送请求进行打包代码检测
-//        for (CheckProject project : checkProjects) {
-//            String jenkinsName = project.getJenkinsName();
-//            //打包构建url
-//            String buildUrl = onemapUrl + jenkinsName + buildSuffix;
-//            //判断构建完成url
-//            String lastBuilUrl = onemapUrl + jenkinsName + monitorSuffix;
-//            asyncService.executeAsync(buildUrl, lastBuilUrl, jenkinsName);
-//        }
-//
-//        //判断线程是否全部执行结束
-//        while (threadPoolTaskExecutor.getActiveCount() > 0) {
-//            try {
-//                Thread.sleep(100);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        if (CollectionUtils.isEmpty(checkProjects)) {
+            return null;
+        }
+
+        //2.异步发送请求进行打包代码检测
+        for (CheckProject project : checkProjects) {
+            String jenkinsName = project.getJenkinsName();
+            //打包构建url
+            String buildUrl = onemapUrl + jenkinsName + buildSuffix;
+            //判断构建完成url
+            String lastBuilUrl = onemapUrl + jenkinsName + monitorSuffix;
+            asyncService.executeAsync(buildUrl, lastBuilUrl, jenkinsName);
+        }
+
+        //判断线程是否全部执行结束
+        while (threadPoolTaskExecutor.getActiveCount() > 0) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
         //3.jenkins执行结束后请求sonarqube查询bug数量
         Map<String, List<CheckResultDto>> statics = getSonarqubeBugStatics(checkProjects);
