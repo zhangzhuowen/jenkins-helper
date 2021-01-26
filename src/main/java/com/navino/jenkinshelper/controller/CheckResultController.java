@@ -1,5 +1,6 @@
 package com.navino.jenkinshelper.controller;
 
+import com.navino.jenkinshelper.service.ExcelExportService;
 import com.navino.jenkinshelper.service.SonarqubeCheck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,9 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CheckResultController {
 //    @Autowired
-//    SonarqubeCheck sonarqubeCheck;
-//    @RequestMapping("/build")
-//    public String getResults() throws Exception{
-//        return null;
-//    }
+//    ExcelExportService excelExportService;
+
+    @RequestMapping("/build")
+    public String getResults() throws Exception {
+//        excelExportService.writeExcel();
+        return null;
+    }
+
+    @RequestMapping("/hello")
+    public String hello() throws Exception {
+        return System.getProperty("user.dir");
+    }
+
 }

@@ -8,6 +8,7 @@ import com.navino.jenkinshelper.dto.CheckResultDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,11 +25,13 @@ import java.util.Map;
 @Service
 public class ExcelExportService {
 
-    String PATH = "C:\\Code\\jenkins-helper\\";
+    public static final String PATH = System.getProperty("user.dir");
 
     @Autowired
     SonarqubeCheck sonarqubeCheck;
 
+    //表示每个星期五上午7点
+    @Scheduled(cron = "0 0 07 ? * FRI")
     public void writeExcel() throws Exception{
         log.info("开始生成Excel!");
 
@@ -37,7 +40,7 @@ public class ExcelExportService {
             return;
         }
 
-        String fileName = PATH + "Sonarqube代码检测结果一览表.xlsx";
+        String fileName = PATH + "\\excel\\Sonarqube代码检测结果一览表.xlsx";
         ExcelWriter excelWriter = EasyExcel.write(fileName).build();
 
         if(data.containsKey(ProjectTypeConstant.ONE_MAP_PROJECT)){
