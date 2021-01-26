@@ -4,13 +4,20 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.navino.jenkinshelper.constants.ProjectTypeConstant;
+import com.navino.jenkinshelper.dao.NaviUsersDao;
 import com.navino.jenkinshelper.dto.CheckResultDto;
+import com.navino.jenkinshelper.util.MailUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +36,21 @@ public class ExcelExportService {
 
     @Autowired
     SonarqubeCheck sonarqubeCheck;
+
+    @Autowired
+    NaviUsersDao naviUsersDao;
+
+    @Value("${jenkins.oneMap-url}")
+    public String onemapUrl;
+
+    @Value("${navi-email.account}")
+    public String account;
+
+    @Value("${navi-email.username}")
+    public String username;
+
+    @Value("${navi-email.password}")
+    public String password;
 
     //表示每个星期五上午7点
     @Scheduled(cron = "0 0 07 ? * FRI")
@@ -57,6 +79,30 @@ public class ExcelExportService {
             excelWriter.write(parkData, writeSheet);
         }
         excelWriter.finish();
+
+        //邮件发送
+        sendExcel(fileName);
+    }
+
+    /**
+     * 邮件发送
+     *
+     * @param fileName
+     * @throws Exception
+     */
+    private void sendExcel(String fileName) throws Exception{
+        List<String> allEmail = naviUsersDao.getAllEmail();
+        if(CollectionUtils.isEmpty(allEmail)){
+            return;
+        }
+
+        LocalDateTime dateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM月dd日");
+
+        String title = "【" + dateTime.format(formatter) + "】" + "Sonarqube代码检测结果";
+
+        File file = new File(fileName);
+        MailUtil.sendEMailFile(allEmail,"请查看附件！", account, username, password, title,file,"Sonarqube代码检测结果一览表.xlsx");
     }
 
 }

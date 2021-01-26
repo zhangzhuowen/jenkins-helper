@@ -1,6 +1,7 @@
 package com.navino.jenkinshelper;
 
 import com.navino.jenkinshelper.dao.CheckProjectDao;
+import com.navino.jenkinshelper.dao.NaviUsersDao;
 import com.navino.jenkinshelper.entity.CheckProject;
 import com.navino.jenkinshelper.mapper.CheckProjectMapper;
 import com.navino.jenkinshelper.service.ExcelExportService;
@@ -33,12 +34,13 @@ class JenkinsHelperApplicationTests {
     @Autowired
     CheckProjectMapper checkProjectMapper;
 
+
+    @Autowired
+    NaviUsersDao naviUsersDao;
+
     @Test
     void ada() throws Exception {
-        List<CheckProject> checkProjects =
-                checkProjectMapper.queryAllCheckProjects();
-
-        int a =1;
+        System.out.println(naviUsersDao.getAllEmail());
     }
 //    /**
 //     * 维护项目列表

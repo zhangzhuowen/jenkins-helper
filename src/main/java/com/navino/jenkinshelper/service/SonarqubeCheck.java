@@ -73,6 +73,12 @@ public class SonarqubeCheck {
         //2.异步发送请求进行打包代码检测
         for (CheckProject project : checkProjects) {
             String jenkinsName = project.getJenkinsName();
+
+            //Jenkins配置有问题，会重复构建，待修复
+            if(jenkinsName.equals("service_baa_master")){
+                continue;
+            }
+
             //打包构建url
             String buildUrl = onemapUrl + jenkinsName + buildSuffix;
             //判断构建完成url

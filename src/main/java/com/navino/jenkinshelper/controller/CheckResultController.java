@@ -1,7 +1,6 @@
 package com.navino.jenkinshelper.controller;
 
 import com.navino.jenkinshelper.service.ExcelExportService;
-import com.navino.jenkinshelper.service.SonarqubeCheck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class CheckResultController {
-//    @Autowired
-//    ExcelExportService excelExportService;
+    @Autowired
+    ExcelExportService excelExportService;
 
     @RequestMapping("/build")
     public String getResults() throws Exception {
-//        excelExportService.writeExcel();
+        excelExportService.writeExcel();
         return null;
     }
 
