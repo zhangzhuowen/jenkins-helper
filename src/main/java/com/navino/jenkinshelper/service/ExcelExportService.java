@@ -73,7 +73,7 @@ public class ExcelExportService {
         }
 
         String fileName = PATH + "Sonarqube代码检测结果一览表" + time + ".xlsx";
-        log.info(fileName);
+        log.info("fileName : " + fileName);
 
         ExcelWriter excelWriter = EasyExcel.write(fileName).build();
 

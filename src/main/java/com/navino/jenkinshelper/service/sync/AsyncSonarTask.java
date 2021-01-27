@@ -30,7 +30,7 @@ public class AsyncSonarTask {
 
         //1.发送请求开始打包
         //String url ="http://10.130.10.45:7878/view/service_code_check/job/navi_commons_master/build?delay=0sec";
-        log.info("buildUrl : " + buildUrl);
+        log.info("打包 buildUrl : " + buildUrl);
         ResponseEntity postResponse = HttpUtils.sendPostRequest(buildUrl, null);
 
         HttpStatus statusCode = postResponse.getStatusCode();
@@ -43,7 +43,7 @@ public class AsyncSonarTask {
 
         //3.开始每隔20秒轮询发送请求判断是否打包成功
         //http://10.130.10.45:7878/view/service_code_check/job/service_biz_common_master/lastBuild/
-        log.info(lastBuilUrl);
+        log.info("判断构建完成 lastBuilUrl: " + lastBuilUrl);
         int lastBuildCount = 1;
         while (true) {
             lastBuildCount++;
