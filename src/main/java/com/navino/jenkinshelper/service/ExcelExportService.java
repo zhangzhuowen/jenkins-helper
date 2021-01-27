@@ -8,6 +8,7 @@ import com.navino.jenkinshelper.dao.NaviUsersDao;
 import com.navino.jenkinshelper.dto.CheckResultDto;
 import com.navino.jenkinshelper.util.MailUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -102,11 +103,11 @@ public class ExcelExportService {
      * @throws Exception
      */
     private void sendExcel(String fileName, LocalDateTime dateTime) throws Exception {
-//        List<String> allEmail = naviUsersDao.getAllEmail();
-//        if (CollectionUtils.isEmpty(allEmail)) {
-//            return;
-//        }
-        List<String> allEmail = Arrays.asList("zhangzhuowen@navinfo.com");
+        List<String> allEmail = naviUsersDao.getAllEmail();
+        if (CollectionUtils.isEmpty(allEmail)) {
+            return;
+        }
+        //List<String> allEmail = Arrays.asList("zhangzhuowen@navinfo.com");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM月dd日");
         String time = dateTime.format(formatter);
