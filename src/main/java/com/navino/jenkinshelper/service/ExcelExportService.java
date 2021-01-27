@@ -32,7 +32,7 @@ import java.util.Map;
 @Service
 public class ExcelExportService {
 
-    public static final String PATH = System.getProperty("user.dir") + "\\excel\\";
+    public static final String PATH = System.getProperty("user.dir") + "/excel/";
 
     @Autowired
     SonarqubeCheck sonarqubeCheck;
