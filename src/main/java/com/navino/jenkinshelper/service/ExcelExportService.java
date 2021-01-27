@@ -8,7 +8,6 @@ import com.navino.jenkinshelper.dao.NaviUsersDao;
 import com.navino.jenkinshelper.dto.CheckResultDto;
 import com.navino.jenkinshelper.util.MailUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +32,7 @@ import java.util.Map;
 @Service
 public class ExcelExportService {
 
-    public static final String PATH = System.getProperty("user.dir");
+    public static final String PATH = System.getProperty("user.dir") + "\\excel\\";
 
     @Autowired
     SonarqubeCheck sonarqubeCheck;
@@ -54,25 +54,36 @@ public class ExcelExportService {
 
     //表示每个星期五上午7点
     @Scheduled(cron = "0 0 07 ? * FRI")
-    public void writeExcel() throws Exception{
+    public void writeExcel() throws Exception {
         log.info("开始生成Excel!");
 
+        LocalDateTime dateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMdd");
+        String time = dateTime.format(formatter);
+
         Map<String, List<CheckResultDto>> data = sonarqubeCheck.getData();
-        if(MapUtils.isEmpty(data)){
+        if (MapUtils.isEmpty(data)) {
             return;
         }
 
-        String fileName = PATH + "\\excel\\Sonarqube代码检测结果一览表.xlsx";
+        File f = new File(PATH);
+        if(!f.exists()){
+            f.mkdirs(); //创建目录
+        }
+
+        String fileName = PATH + "Sonarqube代码检测结果一览表" + time + ".xlsx";
+        log.info(fileName);
+
         ExcelWriter excelWriter = EasyExcel.write(fileName).build();
 
-        if(data.containsKey(ProjectTypeConstant.ONE_MAP_PROJECT)){
+        if (data.containsKey(ProjectTypeConstant.ONE_MAP_PROJECT)) {
 
             List<CheckResultDto> onemapData = data.get(ProjectTypeConstant.ONE_MAP_PROJECT);
             WriteSheet writeSheet = EasyExcel.writerSheet(0, ProjectTypeConstant.ONE_MAP_PROJECT).head(CheckResultDto.class).build();
             excelWriter.write(onemapData, writeSheet);
         }
 
-        if(data.containsKey(ProjectTypeConstant.PARK_PROJECT)){
+        if (data.containsKey(ProjectTypeConstant.PARK_PROJECT)) {
 
             List<CheckResultDto> parkData = data.get(ProjectTypeConstant.PARK_PROJECT);
             WriteSheet writeSheet = EasyExcel.writerSheet(1, ProjectTypeConstant.PARK_PROJECT).head(CheckResultDto.class).build();
@@ -81,7 +92,7 @@ public class ExcelExportService {
         excelWriter.finish();
 
         //邮件发送
-        sendExcel(fileName);
+        sendExcel(fileName, dateTime);
     }
 
     /**
@@ -90,19 +101,20 @@ public class ExcelExportService {
      * @param fileName
      * @throws Exception
      */
-    private void sendExcel(String fileName) throws Exception{
-        List<String> allEmail = naviUsersDao.getAllEmail();
-        if(CollectionUtils.isEmpty(allEmail)){
-            return;
-        }
+    private void sendExcel(String fileName, LocalDateTime dateTime) throws Exception {
+//        List<String> allEmail = naviUsersDao.getAllEmail();
+//        if (CollectionUtils.isEmpty(allEmail)) {
+//            return;
+//        }
+        List<String> allEmail = Arrays.asList("zhangzhuowen@navinfo.com");
 
-        LocalDateTime dateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM月dd日");
+        String time = dateTime.format(formatter);
 
-        String title = "【" + dateTime.format(formatter) + "】" + "Sonarqube代码检测结果";
+        String title = "【" + time + "】" + "Sonarqube代码检测结果";
 
         File file = new File(fileName);
-        MailUtil.sendEMailFile(allEmail,"请查看附件！", account, username, password, title,file,"Sonarqube代码检测结果一览表.xlsx");
+        MailUtil.sendEMailFile(allEmail, "请查看附件！", account, username, password, title, file, "Sonarqube代码检测结果一览表.xlsx");
     }
 
 }

@@ -74,8 +74,7 @@ jenkins:
   build-suffix: /build?delay=0sec
   monitor-suffix: /lastBuild/
   sonarqube-suffix: "&s=FILE_LINE&resolved=false&types=BUG&ps=100&facets=severities%2Ctypes&additionalFields=_all"
-  cookie: jenkins-timestamper-offset=-28800000; JSESSIONID.346bab85=node01bybra0acirk1nhom71w5kr0u439.node0; screenResolution=1536x864; XSRF-TOKEN=dqq7kg4bgrn7b7g37gcp4tnd2m; JWT-SESSION=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJBWGNkbXBWUTlFVGx6NlFMODdkTCIsInN1YiI6ImFkbWluIiwiaWF0IjoxNjExMTA5NDA2LCJleHAiOjE2MTEzNjkxODIsImxhc3RSZWZyZXNoVGltZSI6MTYxMTEwOTQwNjAzMiwieHNyZlRva2VuIjoiZHFxN2tnNGJncm43YjdnMzdnY3A0dG5kMm0ifQ.VQMVQXDVcAeIVOrwzB6EeUA9Ikenyvk1NNPCsSqLohU
-
+  cookie: jenkins-timestamper-offset=-28800000; XSRF-TOKEN=3j6osbkfrdqjeqeno3v3970pqs; JSESSIONID.8db49794=node063cjgxg55ugt18afvhayavhck17.node0; screenResolution=1536x864; JWT-SESSION=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJBWGRCaUxRZTlFVGx6NlFMODdleSIsInN1YiI6ImFkbWluIiwiaWF0IjoxNjExNzEyMjE0LCJleHAiOjE2MTE5NzE4MzgsImxhc3RSZWZyZXNoVGltZSI6MTYxMTcxMjIxNDA0NiwieHNyZlRva2VuIjoiM2o2b3Nia2ZyZHFqZXFlbm8zdjM5NzBwcXMifQ.mLhltcTT1762IcwRVyYA_hn91JQbknmGajHxx1PZKpY
 # 邮件发送者
 navi-email:
   account: zhangzhuowen@navinfo.com

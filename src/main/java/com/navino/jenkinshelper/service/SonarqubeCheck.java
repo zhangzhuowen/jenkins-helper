@@ -66,34 +66,34 @@ public class SonarqubeCheck {
         //1.查询所有Jenkins中所配置项目名称
         List<CheckProject> checkProjects = checkProjectDao.queryAllCheckProjects();
 
-        if (CollectionUtils.isEmpty(checkProjects)) {
-            return null;
-        }
-
-        //2.异步发送请求进行打包代码检测
-        for (CheckProject project : checkProjects) {
-            String jenkinsName = project.getJenkinsName();
-
-            //Jenkins配置有问题，会重复构建，待修复
-            if(jenkinsName.equals("service_baa_master")){
-                continue;
-            }
-
-            //打包构建url
-            String buildUrl = onemapUrl + jenkinsName + buildSuffix;
-            //判断构建完成url
-            String lastBuilUrl = onemapUrl + jenkinsName + monitorSuffix;
-            asyncService.executeAsync(buildUrl, lastBuilUrl, jenkinsName);
-        }
-
-        //判断线程是否全部执行结束
-        while (threadPoolTaskExecutor.getActiveCount() > 0) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (CollectionUtils.isEmpty(checkProjects)) {
+//            return null;
+//        }
+//
+//        //2.异步发送请求进行打包代码检测
+//        for (CheckProject project : checkProjects) {
+//            String jenkinsName = project.getJenkinsName();
+//
+//            //Jenkins配置有问题，会重复构建，待修复
+//            if(jenkinsName.equals("service_baa_master")){
+//                continue;
+//            }
+//
+//            //打包构建url
+//            String buildUrl = onemapUrl + jenkinsName + buildSuffix;
+//            //判断构建完成url
+//            String lastBuilUrl = onemapUrl + jenkinsName + monitorSuffix;
+//            asyncService.executeAsync(buildUrl, lastBuilUrl, jenkinsName);
+//        }
+//
+//        //判断线程是否全部执行结束
+//        while (threadPoolTaskExecutor.getActiveCount() > 0) {
+//            try {
+//                Thread.sleep(100);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         //3.jenkins执行结束后请求sonarqube查询bug数量
         Map<String, List<CheckResultDto>> statics = getSonarqubeBugStatics(checkProjects);
@@ -106,7 +106,7 @@ public class SonarqubeCheck {
      * @param checkProjects
      * @return
      */
-    private Map<String, List<CheckResultDto>> getSonarqubeBugStatics(List<CheckProject> checkProjects) {
+    private Map<String, List<CheckResultDto>> getSonarqubeBugStatics(List<CheckProject> checkProjects) throws Exception{
         Map<String, List<CheckResultDto>> map = new HashMap<>();
 
         List<CheckResultDto> oneMapDatas = new ArrayList<>();
@@ -120,13 +120,20 @@ public class SonarqubeCheck {
 
             //sonarqube url
             String sonarUrl = sonarqubeUrl + sonarName + sonarqubeSuffix;
-            log.info("项目: " + projectName + ",sonarqubeUrl : " + sonarqubeUrl);
+            log.info("项目: " + projectName + ",sonarUrl : " + sonarUrl);
 
-            String str = HttpUtils.sendGetRequest(sonarUrl, "utf-8", cookie);
+            String str = null;
+            try {
+                str = HttpUtils.sendGetRequest(sonarUrl, "utf-8", cookie);
+            }catch (Exception e){
+                log.info("cookie 失效！");
+                throw e;
+            }
 
             if (StringUtils.isEmpty(str)) {
                 //先排查cookie问题
                 log.info("项目: " + projectName + ",sonarqubeUrl 无返回值！请检查");
+                continue;
             }
 
             JSONObject data = JSONObject.parseObject(str);
