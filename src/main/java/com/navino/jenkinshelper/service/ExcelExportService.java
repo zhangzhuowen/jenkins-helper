@@ -53,8 +53,8 @@ public class ExcelExportService {
     @Value("${navi-email.password}")
     public String password;
 
-    //表示每个星期五上午7点
-    @Scheduled(cron = "0 0 07 ? * FRI")
+    //表示每个星期四下午5点
+    @Scheduled(cron = "0 0 17 ? * THU")
     public void writeExcel() throws Exception {
         log.info("开始生成Excel!");
 
