@@ -54,7 +54,7 @@ public class ExcelExportService {
     public String password;
 
     //表示每个星期四下午5点
-    @Scheduled(cron = "0 0 17 ? * THU")
+    @Scheduled(cron = "0 20 10 ? * THU")
     public void writeExcel() throws Exception {
         log.info("开始生成Excel!");
 
